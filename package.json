@@ -1,6 +1,6 @@
 {
   "name": "simply-result-util",
-  "version": "1.0.2",
+  "version": "1.1.0",
   "description": "Monadic utility functions using the simply-result package.",
   "main": "dist/main.js",
   "sideEffects": false,

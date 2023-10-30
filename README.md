@@ -18,28 +18,8 @@ Provides monadic utility functions using the [simply-result package](https://git
 
 ```ts
 import {
-    Try, TryAsync, Get, 
+    Try, TryAsync, Get, Find,
     transpose, flatten, 
     fromPromise,
 } from 'simply-result-util';
-```
-
-## Type Docs
-
-```ts
-function Try<V, E = Error>(fn: () => V): Result<V, E>
-
-function TryAsync<V, E = Error>(fn: () => Promise<V>): Promise<Result<V, E>>
-
-function Get<V, K>(maplike: {
-  get(key: K): V
-  has(key: K): boolean
-}, key: K): Option<V>
-
-function transpose<V, E>(result: Result<Option<V>, E>): Option<Result<V, E>>
-
-function flatten<V>(outerOption: Option<Option<V>>): Option<V>
-function flatten<V, E>(outerResult: Result<Result<V, E>, E>): Result<V, E>
-
-function fromPromise<T, E = Error>(promiselike: PromiseLike<T>): Promise<Result<T, E>>
 ```
