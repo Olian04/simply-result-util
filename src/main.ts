@@ -3,3 +3,4 @@ export * from './Get';
 export * from './transpose';
 export * from './flatten';
 export * from './fromPromise';
+export * from './Find';
