@@ -1,11 +1,13 @@
 import { Option, Some, None } from "simply-result";
 import { MapLike } from "./types/MapLike";
+import { SetLike } from "./types/SetLike";
 
 export function Get<V, K>(mapLike: MapLike<K, V>, key: K): Option<V>;
+export function Get<V>(setLike: SetLike<V>, item: V): Option<V>;
 export function Get<V, K extends number | string | symbol>(object: Partial<Record<K, V>>, key: K): Option<V>;
 export function Get<V>(arrayLike: ArrayLike<V>, index: number): Option<V>;
-export function Get<V, K extends number | string | symbol>(target: MapLike<K, V> | Partial<Record<K, V>> | ArrayLike<V>, key: number | K): Option<V> {
-  if (Array.isArray(target) && typeof key === 'number') {
+export function Get<V, K extends number | string | symbol>(target: MapLike<K, V> | SetLike<V> | Partial<Record<K, V>> | ArrayLike<V>, key: any): Option<V> {
+  if (Array.isArray(target)) {
     if (target.length === 0) {
       return None;
     }
@@ -19,11 +21,17 @@ export function Get<V, K extends number | string | symbol>(target: MapLike<K, V>
     return None;
   }
 
-  if ('get' in target && typeof key !== 'number') {
-    if (target.has(key)) {
-      return Some(target.get(key));
+  if ('get' in target) {
+    if (target.has(key as K)) {
+      return Some(target.get(key as K));
     }
     return None;
+  }
+
+  if ('has' in target) {
+    if (target.has(key as V)) {
+      return Some(key as V);
+    }
   }
 
   if (key in target) {

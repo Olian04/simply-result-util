@@ -8,26 +8,44 @@ const Expected = 'Expected';
 const Key = 'Key';
 
 describe('Find', () => {
-  describe('Map', it => {
-    it('should return Some if Item is in Map', ({ expect }) => {
-      const map = new Map<string, string>();
-      map.set(Key, Expected);
-      const res = Find(map, el => el === Expected);
-      expect(
-        res.isSome
-         ? res.some
-         : expect.fail()
-      ).to.equal(Expected);
+  describe('Set', it => {
+    it('should return Some if Item is present', ({ expect }) => {
+      const set = new Set<string>();
+      set.add(Expected);
+      const res = Find(set, el => el === Expected).unwrapElse(() => expect.fail());
+      expect(res).to.equal(Expected);
     });
 
-    it('should return None if Item is missing in Map', ({ expect }) => {
+    it('should return None if Item is missing', ({ expect }) => {
+      const set = new Set<string>();
+      set.add(Fail);
+      const res = Find(set, el => el === Expected);
+      expect(res).to.equal(None);
+    });
+
+    it('should return None if empty', ({ expect }) => {
+      const set = new Set<string>();
+      const res = Find(set, el => el === Expected);
+      expect(res).to.equal(None);
+    });
+  });
+
+  describe('Map', it => {
+    it('should return Some if Item is present', ({ expect }) => {
+      const map = new Map<string, string>();
+      map.set(Key, Expected);
+      const res = Find(map, el => el === Expected).unwrapElse(() => expect.fail());
+      expect(res).to.equal(Expected);
+    });
+
+    it('should return None if Item is missing', ({ expect }) => {
       const map = new Map<string, string>();
       map.set(Key, Fail);
       const res = Find(map, el => el === Expected);
       expect(res).to.equal(None);
     });
 
-    it('should return None if Object has no keys', ({ expect }) => {
+    it('should return None if empty', ({ expect }) => {
       const map = new Map<string, string>();
       const res = Find(map, el => el === Expected);
       expect(res).to.equal(None);
@@ -35,23 +53,19 @@ describe('Find', () => {
   });
 
   describe('Object', it => {
-    it('should return Some if Property is in Object', ({ expect }) => {
+    it('should return Some if Property is present', ({ expect }) => {
       const obj = { [Key]: Expected };
-      const res = Find(obj, el => el === Expected);
-      expect(
-        res.isSome
-         ? res.some
-         : expect.fail()
-      ).to.equal(Expected);
+      const res = Find(obj, el => el === Expected).unwrapElse(() => expect.fail());
+      expect(res).to.equal(Expected);
     });
 
-    it('should return None if Property is missing in Object', ({ expect }) => {
+    it('should return None if Property is missing', ({ expect }) => {
       const obj = { [Key]: Fail };
       const res = Find(obj, el => el === Expected);
       expect(res).to.equal(None);
     });
 
-    it('should return None if Object has no keys', ({ expect }) => {
+    it('should return None if empty', ({ expect }) => {
       const obj = {};
       const res = Find(obj, el => el === Expected);
       expect(res).to.equal(None);
@@ -59,23 +73,19 @@ describe('Find', () => {
   });
 
   describe('Array', it => {
-    it('should return Some if Element is in Array', ({ expect }) => {
+    it('should return Some if Element is present', ({ expect }) => {
       const array = [Expected];
-      const res = Find(array, el => el === Expected);
-      expect(
-        res.isSome
-         ? res.some
-         : expect.fail()
-      ).to.equal(Expected);
+      const res = Find(array, el => el === Expected).unwrapElse(() => expect.fail());
+      expect(res).to.equal(Expected);
     });
 
-    it('should return None if Element is missing in Array', ({ expect }) => {
+    it('should return None if Element is missing', ({ expect }) => {
       const array = [Fail];
       const res = Find(array, el => el === Expected);
       expect(res).to.equal(None);
     });
 
-    it('should return None if Array is empty', ({ expect }) => {
+    it('should return None if empty', ({ expect }) => {
       const array = [];
       const res = Find(array, () => true);
       expect(res).to.equal(None);
