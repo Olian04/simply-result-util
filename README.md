@@ -21,5 +21,6 @@ import {
     Try, TryAsync, Get, Find,
     transpose, flatten, 
     fromPromise,
+    marshal, unmarshalOption, unmarshalResult
 } from 'simply-result-util';
 ```
